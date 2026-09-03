@@ -15,9 +15,9 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 
 const SITE_URL = "https://Velixa.vercel.app";
 const SITE_NAME = "Velixa";
-const DEFAULT_TITLE = "Velixa — Live screen sharing between devices";
+const DEFAULT_TITLE = "Velixa — Talk, share, connect";
 const DEFAULT_DESCRIPTION =
-  "Share your screen instantly with a simple room code. No accounts, no downloads, peer-to-peer live broadcasting.";
+  "Start a voice call, video call, or screen share with a simple room code.";
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.jpg`;
 const DEFAULT_IMAGE_ALT = "Velixa logo and screen sharing preview";
 const ARCHER_URL = "https://abdulbasit-archer.vercel.app/";
@@ -42,7 +42,7 @@ function NotFoundComponent() {
       <div className="max-w-md text-center">
         <p className="font-mono text-xs uppercase tracking-[0.3em] text-signal">Signal lost</p>
         <h1 className="mt-4 font-mono text-6xl text-text-primary">404</h1>
-        <p className="mt-2 text-sm text-text-muted">This frequency isn&apos;t broadcasting.</p>
+        <p className="mt-2 text-sm text-text-muted">This room isn&apos;t active.</p>
         <div className="mt-6">
           <Link
             to="/"

@@ -5,7 +5,7 @@ export const Route = createFileRoute("/help")({
   head: () => ({
     meta: [
       { title: "How to Use — Velixa" },
-      { name: "description", content: "Learn how to use Velixa for screen sharing." },
+      { name: "description", content: "Learn how to use Velixa for calls and screen sharing." },
     ],
   }),
   component: Help,
@@ -15,17 +15,17 @@ const focusRing =
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal";
 
 const HOST_STEPS = [
-  "Open a frequency from the landing page on a desktop browser.",
-  "Share the generated room code or link with viewers.",
-  "Click Go Live and choose the screen, window, or tab to broadcast.",
-  "Allow microphone access if you want audio to travel with the stream.",
+  "Create a room from the landing page.",
+  "Share the generated room code or link with your participant.",
+  "Choose a voice call, video call, or screen share.",
+  "Allow camera or microphone access when your browser asks.",
 ];
 
 const VIEWER_STEPS = [
-  "Enter the 6-character room code on the landing page.",
+  "Enter the six-character room code on the landing page.",
   "Or tap the QR scan button on mobile to scan a shared code.",
-  "Tune in and wait for the host to start broadcasting.",
-  "If the broadcast ends, refresh or return to the landing page to reconnect.",
+  "Wait for the room to connect, then choose how you want to communicate.",
+  "Accept incoming calls, or stay in the room while a participant reconnects.",
 ];
 
 function StepList({ steps }: { steps: string[] }) {
@@ -55,7 +55,7 @@ function Help() {
             How to use Velixa
           </h1>
           <p className="max-w-2xl text-sm leading-relaxed text-text-muted">
-            Follow these steps to broadcast or watch a live screen session.
+            Follow these steps to join a call or share your screen.
           </p>
           <nav aria-label="Jump to section" className="flex gap-4 pt-2">
             <a
@@ -100,7 +100,7 @@ function Help() {
             to="/"
             className={`group inline-flex items-center gap-2 rounded-md bg-signal px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-signal/90 ${focusRing}`}
           >
-            Open a frequency
+            Create a room
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>

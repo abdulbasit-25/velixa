@@ -1,10 +1,10 @@
-# Viorax Project Overview
+# Velixa Project Overview
 
-Viorax is a browser-based screen-sharing application. One person acts as a **host** and shares a screen, window, or browser tab. Other people join as **viewers** by entering a short room code or scanning a QR code.
+Velixa is a browser-based communication application for voice calls, video calls, and screen sharing. One person acts as a **host** and shares a room code. Other people join as **participants** by entering the code or scanning a QR code.
 
 The application is designed to avoid accounts, downloads, recordings, and a custom video-storage backend. The host's media stream is sent through WebRTC media connections to the connected viewers.
 
-## What Happens When Someone Uses Viorax
+## What Happens When Someone Uses Velixa
 
 ### 1. The landing page opens
 
@@ -56,12 +56,12 @@ navigator.mediaDevices.getDisplayMedia({
 });
 ```
 
-The host can select a screen, window, or tab. Viorax then builds a new `MediaStream` containing:
+The host can select a screen, window, or tab. Velixa then builds a new `MediaStream` containing:
 
 - The selected display's video track.
 - A mixed audio track, when available.
 
-For audio, Viorax attempts to capture the microphone with `getUserMedia()`. If both display audio and microphone audio are available, it mixes them with the Web Audio API before adding the result to the outgoing stream.
+For audio, Velixa attempts to capture the microphone with `getUserMedia()`. If both display audio and microphone audio are available, it mixes them with the Web Audio API before adding the result to the outgoing stream.
 
 Each connected viewer receives a separate PeerJS media call. If a new viewer joins while broadcasting is already active, the host immediately calls that viewer with the current stream.
 
@@ -92,7 +92,7 @@ PeerJS peer  <--- signaling --->     PeerJS peer
 
 - **PeerJS** provides the peer identity, connection setup, and event handling.
 - **WebRTC** carries the live audio/video media between browsers.
-- The Viorax application does not upload a recording or render a video stream from a server.
+- The Velixa application does not upload a recording or render a video stream from a server.
 - PeerJS infrastructure is still required for peer discovery/signaling, and WebRTC connectivity can depend on network and NAT conditions.
 
 The phrase “peer-to-peer” applies to the media connection. It does not mean that no network service is involved at all: PeerJS signaling and the WebRTC connection process still need network access.
@@ -206,9 +206,9 @@ The project also supports npm equivalents such as `npm install`, `npm run dev`, 
 
 ## Privacy and Security Boundaries
 
-Viorax currently has no user accounts, recording feature, or application-level video storage. Room codes are short and are intended to be shared privately with the people who should view the broadcast.
+Velixa currently has no user accounts, recording feature, or application-level video storage. Room codes are short and are intended to be shared with the people who should join the room.
 
-A room code is not an authentication mechanism. Anyone who obtains a valid code may attempt to join while the host is online. The application also depends on third-party PeerJS/WebRTC networking, so the absence of a Viorax video server should not be interpreted as complete end-to-end privacy from every network service involved in connection setup.
+A room code is not an authentication mechanism. Anyone who obtains a valid code may attempt to join while the host is online. The application also depends on third-party PeerJS/WebRTC networking, so the absence of a Velixa media server should not be interpreted as complete end-to-end privacy from every network service involved in connection setup.
 
 ## Cleanup Behavior
 

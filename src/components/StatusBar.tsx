@@ -37,7 +37,7 @@ export function StatusBar({
             <Radio className="h-3.5 w-3.5" />
           </div>
           <span className="hidden font-mono text-[10px] uppercase tracking-[0.3em] sm:inline">
-            Viorax
+            Velixa
           </span>
         </Link>
         <div className="h-6 w-px shrink-0 bg-panel-line" />

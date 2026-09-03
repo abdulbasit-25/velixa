@@ -4,8 +4,8 @@ import { ArrowRight } from "lucide-react";
 export const Route = createFileRoute("/help")({
   head: () => ({
     meta: [
-      { title: "How to Use — Viorax" },
-      { name: "description", content: "Learn how to use Viorax for screen sharing." },
+      { title: "How to Use — Velixa" },
+      { name: "description", content: "Learn how to use Velixa for screen sharing." },
     ],
   }),
   component: Help,
@@ -52,7 +52,7 @@ function Help() {
         <div className="space-y-3">
           <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-signal">Help</p>
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
-            How to use Viorax
+            How to use Velixa
           </h1>
           <p className="max-w-2xl text-sm leading-relaxed text-text-muted">
             Follow these steps to broadcast or watch a live screen session.

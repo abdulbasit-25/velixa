@@ -16,13 +16,13 @@ export const Route = createFileRoute("/room/$roomId")({
   validateSearch: searchSchema,
   head: ({ params }) => ({
     meta: [
-      { title: `Frequency ${params.roomId} — Velixa` },
+      { title: `Room ${params.roomId} — Velixa` },
       {
         name: "description",
-        content: `Tune in on frequency ${params.roomId} to receive a live screen broadcast.`,
+        content: `Join room ${params.roomId} for a voice call, video call, or screen share.`,
       },
       { property: "og:title", content: `Frequency ${params.roomId}` },
-      { property: "og:description", content: "Live screen broadcast via Velixa." },
+      { property: "og:description", content: "Voice, video, and screen sharing through Velixa." },
       { property: "og:image", content: "https://Velixa.vercel.app/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: "https://Velixa.vercel.app/og-image.jpg" },
@@ -48,7 +48,7 @@ function RoomPage() {
 
   useEffect(() => {
     if (code.length !== 6) {
-      toast.error("Invalid frequency code.");
+      toast.error("Invalid room code.");
       navigate({ to: "/" });
     }
   }, [code, navigate]);
@@ -76,11 +76,11 @@ function HostRoom({ code }: { code: string }) {
     host.state === "initializing"
       ? "Opening"
       : host.state === "waiting"
-        ? "Standby"
+        ? "Ready"
         : host.state === "connected"
-          ? "Linked"
+          ? "Connected"
           : host.state === "live"
-            ? "Live"
+            ? "Active"
             : host.state === "error"
               ? "Error"
               : "—";
@@ -109,7 +109,7 @@ function HostRoom({ code }: { code: string }) {
       {host.state === "error" ? (
         <div className="mx-auto max-w-lg px-6 py-20 text-center">
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-destructive">
-            Frequency error
+            Room error
           </p>
           <p className="mt-4 text-sm text-text-muted">{host.error}</p>
         </div>
@@ -126,15 +126,15 @@ function ViewerRoom({ code }: { code: string }) {
 
   const statusLabel =
     viewer.state === "initializing"
-      ? "Tuning"
+      ? "Opening"
       : viewer.state === "waiting"
-        ? "Reaching"
+        ? "Connecting"
         : viewer.state === "connected"
-          ? "Linked"
+          ? "Ready"
           : viewer.state === "live"
-            ? "Receiving"
+            ? "Active"
             : viewer.state === "disconnected"
-              ? "Off-air"
+              ? "Disconnected"
               : viewer.state === "error"
                 ? "Error"
                 : "—";

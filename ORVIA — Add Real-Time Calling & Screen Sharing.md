@@ -1,12 +1,12 @@
-# ORVIA — Add Real-Time Calling & Screen Sharing
+# Velixa — Add Real-Time Calling & Screen Sharing
 
-Transform the existing **Viorax** project into a unified real-time communication application called **ORVIA**.
+Transform the existing **Viorax** project into a unified real-time communication application called **Velixa**.
 
 First, analyze the entire existing codebase and understand how the current room, PeerJS, WebRTC, screen-sharing, QR, routing, and media lifecycle work. **Do not rewrite the application from scratch.** Extend the existing architecture and reuse what is already working.
 
 ## Core Goal
 
-ORVIA should allow users to enter a room and choose what they want to do:
+Velixa should allow users to enter a room and choose what they want to do:
 
 - **Voice Call**
 - **Video Call**
@@ -47,11 +47,11 @@ The application is no longer called **Viorax**.
 
 The new product name is:
 
-**ORVIA**
+**Velixa**
 
 Replace existing user-facing branding throughout the application:
 
-- Viorax → ORVIA
+- Viorax → Velixa
 - Page titles
 - Metadata
 - Navigation
@@ -79,12 +79,15 @@ A user should still be able to create or join a room using the existing room-cod
 After entering a room, provide a clear communication interface where the user can choose:
 
 ### Voice Call
+
 Audio-only communication.
 
 ### Video Call
+
 Camera + microphone communication.
 
 ### Screen Share
+
 Share screen, window, or browser tab.
 
 The UI should make these options immediately understandable.
@@ -313,7 +316,7 @@ Do not create duplicate peer connections unnecessarily.
 
 # UX
 
-Make ORVIA feel like a polished modern communication product rather than a developer demo.
+Make Velixa feel like a polished modern communication product rather than a developer demo.
 
 The interface should immediately communicate:
 
@@ -325,7 +328,7 @@ Keep the UI simple, responsive, and intuitive.
 
 Support desktop and mobile layouts where browser capabilities allow it.
 
-Respect the project's existing visual language, but update it so it feels appropriate for the new **ORVIA** identity.
+Respect the project's existing visual language, but update it so it feels appropriate for the new **Velixa** identity.
 
 Do not copy the old Viorax branding.
 
@@ -413,4 +416,4 @@ After implementation:
 
 Do not leave TODO placeholders for core functionality.
 
-The final result should be a functioning **ORVIA** real-time communication application where users can enter a room and choose between **voice call, video call, and screen sharing**, all built on the project's existing PeerJS/WebRTC architecture.
+The final result should be a functioning **Velixa** real-time communication application where users can enter a room and choose between **voice call, video call, and screen sharing**, all built on the project's existing PeerJS/WebRTC architecture.

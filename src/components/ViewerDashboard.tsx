@@ -17,6 +17,7 @@ import { Waveform } from "./Waveform";
 
 export function ViewerDashboard({ viewer, roomCode }: { viewer: ViewerState; roomCode: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const localVideoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const [micEnabled, setMicEnabled] = useState(true);
   const [cameraEnabled, setCameraEnabled] = useState(true);
@@ -26,6 +27,12 @@ export function ViewerDashboard({ viewer, roomCode }: { viewer: ViewerState; roo
       videoRef.current.srcObject = viewer.remoteStream;
     }
   }, [viewer.remoteStream]);
+
+  useEffect(() => {
+    if (localVideoRef.current && viewer.localStream) {
+      localVideoRef.current.srcObject = viewer.localStream;
+    }
+  }, [viewer.localStream]);
 
   const isLive = viewer.state === "live" && viewer.remoteStream;
 
@@ -50,13 +57,44 @@ export function ViewerDashboard({ viewer, roomCode }: { viewer: ViewerState; roo
   return (
     <div className="flex flex-col gap-4 px-4 py-6 sm:px-6 lg:px-10 lg:py-10">
       <div className="relative aspect-video w-full overflow-hidden border border-panel-line bg-black">
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted={muted}
-          className={`h-full w-full object-contain ${isLive ? "opacity-100" : "opacity-0"}`}
-        />
+        {viewer.callMode === "voice" && viewer.remoteStream ? (
+          <div className="flex h-full flex-col items-center justify-center gap-4 bg-panel">
+            <div className="grid h-20 w-20 place-items-center border border-signal/60 text-2xl text-signal">
+              {roomCode.slice(0, 2)}
+            </div>
+            <div className="text-center">
+              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-signal">
+                Voice call active
+              </p>
+              <p className="mt-2 text-sm text-text-muted">Room participant</p>
+            </div>
+            <audio
+              ref={(element) => {
+                if (element) element.srcObject = viewer.remoteStream;
+              }}
+              autoPlay
+              muted={muted}
+            />
+          </div>
+        ) : (
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            muted={muted}
+            className={`h-full w-full object-contain ${isLive ? "opacity-100" : "opacity-0"}`}
+          />
+        )}
+
+        {viewer.callMode === "video" && viewer.localStream && (
+          <video
+            ref={localVideoRef}
+            autoPlay
+            playsInline
+            muted
+            className="absolute bottom-4 right-4 aspect-video w-28 border border-panel-line bg-ink object-cover sm:w-40"
+          />
+        )}
 
         {!isLive && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-ink px-6 text-center">
@@ -67,7 +105,7 @@ export function ViewerDashboard({ viewer, roomCode }: { viewer: ViewerState; roo
                   Signal error
                 </p>
                 <p className="max-w-sm text-sm text-text-muted">
-                  {viewer.error || "Could not lock onto frequency."}
+                  {viewer.error || "Could not connect to this room."}
                 </p>
               </>
             ) : viewer.state === "disconnected" ? (
@@ -77,7 +115,7 @@ export function ViewerDashboard({ viewer, roomCode }: { viewer: ViewerState; roo
                   Off the air
                 </p>
                 <p className="max-w-sm text-sm text-text-muted">
-                  Host went off the air. Hold tight — reconnect automatically when they're back.
+                  The participant disconnected. You can stay here and wait for them to reconnect.
                 </p>
               </>
             ) : (
@@ -85,10 +123,10 @@ export function ViewerDashboard({ viewer, roomCode }: { viewer: ViewerState; roo
                 <Waveform state={viewer.state === "connected" ? "connected" : "idle"} bars={40} />
                 <p className="font-mono text-xs uppercase tracking-[0.3em] text-text-muted">
                   {viewer.state === "initializing"
-                    ? "Locking onto frequency..."
+                    ? "Opening room..."
                     : viewer.state === "waiting"
-                      ? `Reaching frequency ${roomCode}...`
-                      : "Connected — waiting for host to go live."}
+                      ? `Connecting to room ${roomCode}...`
+                      : "Ready to connect with a participant."}
                 </p>
               </>
             )}
@@ -98,7 +136,11 @@ export function ViewerDashboard({ viewer, roomCode }: { viewer: ViewerState; roo
         {isLive && (
           <div className="pointer-events-none absolute left-3 top-3 flex items-center gap-2 border border-signal/60 bg-ink/70 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.3em] text-signal">
             <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-signal" />
-            Live
+            {viewer.callMode === "voice"
+              ? "Voice call active"
+              : viewer.callMode === "video"
+                ? "Video call active"
+                : "Screen sharing active"}
           </div>
         )}
       </div>
@@ -134,7 +176,7 @@ export function ViewerDashboard({ viewer, roomCode }: { viewer: ViewerState; roo
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted">
-          Receiving on <span className="text-text-primary tracking-[0.4em]">{roomCode}</span>
+          Room <span className="text-text-primary tracking-[0.4em]">{roomCode}</span>
         </div>
         <div className="flex items-center gap-2">
           {!viewer.callMode && viewer.state === "connected" && (

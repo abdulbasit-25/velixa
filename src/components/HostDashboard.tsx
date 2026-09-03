@@ -1,6 +1,6 @@
 import { QRCodeSVG } from "qrcode.react";
 import { CopyButton } from "./CopyButton";
-import { MonitorUp, MonitorX, Users, QrCode } from "lucide-react";
+import { MonitorUp, MonitorX, Users, QrCode, Phone, Video, PhoneOff } from "lucide-react";
 import { Waveform } from "./Waveform";
 import type { HostState } from "@/hooks/usePeerConnection";
 
@@ -13,7 +13,17 @@ export function HostDashboard({
   host: HostState;
   joinUrl: string;
 }) {
-  const { state, viewerCount, isSharing, canShareScreen, startSharing, stopSharing } = host;
+  const {
+    state,
+    viewerCount,
+    isSharing,
+    callMode,
+    canShareScreen,
+    startCall,
+    endCall,
+    startSharing,
+    stopSharing,
+  } = host;
 
   const statusText =
     state === "initializing"
@@ -59,8 +69,84 @@ export function HostDashboard({
           <p className="mt-4 text-sm text-text-muted">{statusText}</p>
         </div>
 
+        {host.incomingCall && (
+          <div className="flex flex-wrap items-center justify-between gap-4 border border-signal bg-panel p-5">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-signal">
+                Incoming {host.incomingCall.mode} call
+              </p>
+              <p className="mt-2 text-sm text-text-primary">
+                A participant is calling from this room.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={host.acceptCall}
+                className="inline-flex items-center gap-2 bg-signal px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ink"
+              >
+                <Phone className="h-3.5 w-3.5" /> Accept
+              </button>
+              <button
+                type="button"
+                onClick={host.rejectCall}
+                className="inline-flex items-center gap-2 border border-destructive px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-destructive"
+              >
+                <PhoneOff className="h-3.5 w-3.5" /> Decline
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col gap-3">
-          {!isSharing ? (
+          {!isSharing && !callMode && (
+            <div className="grid gap-3 sm:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => startCall("voice")}
+                disabled={state === "initializing" || state === "error" || viewerCount === 0}
+                className="flex items-center justify-between border border-signal/60 px-5 py-4 text-left transition-colors hover:bg-signal/10 disabled:opacity-40"
+              >
+                <span>
+                  <span className="block font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted">
+                    Voice
+                  </span>
+                  <span className="mt-1 block text-lg font-semibold">Start call</span>
+                </span>
+                <Phone className="h-5 w-5 text-signal" />
+              </button>
+              <button
+                type="button"
+                onClick={() => startCall("video")}
+                disabled={state === "initializing" || state === "error" || viewerCount === 0}
+                className="flex items-center justify-between border border-signal/60 px-5 py-4 text-left transition-colors hover:bg-signal/10 disabled:opacity-40"
+              >
+                <span>
+                  <span className="block font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted">
+                    Video
+                  </span>
+                  <span className="mt-1 block text-lg font-semibold">Start call</span>
+                </span>
+                <Video className="h-5 w-5 text-signal" />
+              </button>
+            </div>
+          )}
+          {callMode && (
+            <button
+              type="button"
+              onClick={endCall}
+              className="group flex items-center justify-between border border-destructive bg-destructive px-6 py-5 text-left text-white transition-colors hover:bg-destructive/90"
+            >
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.3em] opacity-80">
+                  {callMode} call
+                </div>
+                <div className="mt-1 text-xl font-semibold">End call</div>
+              </div>
+              <PhoneOff className="h-6 w-6" />
+            </button>
+          )}
+          {!callMode && !isSharing && (
             <button
               type="button"
               onClick={startSharing}
@@ -75,7 +161,8 @@ export function HostDashboard({
               </div>
               <MonitorUp className="h-6 w-6" />
             </button>
-          ) : (
+          )}
+          {isSharing && (
             <button
               onClick={stopSharing}
               className="group flex items-center justify-between border border-destructive bg-destructive px-6 py-5 text-left text-white transition-colors hover:bg-destructive/90"

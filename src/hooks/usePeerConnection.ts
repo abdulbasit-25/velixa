@@ -34,6 +34,7 @@ export interface HostState {
   canShareScreen: boolean;
   callMode: CallMode | null;
   localStream: MediaStream | null;
+  remoteStream: MediaStream | null;
   incomingCall: { caller: string; mode: "voice" | "video"; call: MediaConnection } | null;
   acceptCall: () => void;
   rejectCall: () => void;
@@ -70,6 +71,7 @@ export function useHost(
   const [isSharing, setIsSharing] = useState(false);
   const [callMode, setCallMode] = useState<CallMode | null>(null);
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+  const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
   const [incomingCall, setIncomingCall] = useState<HostState["incomingCall"]>(null);
   const [error, setError] = useState<string | undefined>();
   const canShareScreen =
@@ -101,12 +103,13 @@ export function useHost(
       conn.on("open", () => {
         setViewerCount(dataConnsRef.current.size);
         setState((s) => (s === "waiting" ? "connected" : s));
-        eventRef.current?.("Viewer tuned in", "success");
+        eventRef.current?.("Participant joined", "success");
         // If already sharing, call this new viewer with the current stream
         if (streamRef.current) {
           const call = peer.call(conn.peer, streamRef.current, { metadata: { mode: "screen" } });
           if (call) {
             mediaCallsRef.current.set(conn.peer, call);
+            call.on("stream", setRemoteStream);
             call.on("close", () => mediaCallsRef.current.delete(conn.peer));
           }
         }
@@ -138,7 +141,7 @@ export function useHost(
     peer.on("error", (err) => {
       console.error("Peer error", err);
       if (err.type === "unavailable-id") {
-        setError("This frequency is already in use.");
+        setError("This room is already in use.");
       } else if (err.type === "network" || err.type === "server-error") {
         setError("Broker unreachable. Check your connection.");
       } else {
@@ -184,6 +187,7 @@ export function useHost(
     setCallMode(null);
     mediaCallsRef.current.forEach((call) => call.close());
     mediaCallsRef.current.clear();
+    setRemoteStream(null);
     setState(dataConnsRef.current.size > 0 ? "connected" : "waiting");
     eventRef.current?.("Call ended", "info");
   }, []);
@@ -198,6 +202,7 @@ export function useHost(
       });
       pending.call.answer(stream);
       mediaCallsRef.current.set(pending.caller, pending.call);
+      pending.call.on("stream", setRemoteStream);
       streamRef.current = stream;
       micStreamRef.current = stream;
       setLocalStream(stream);
@@ -238,7 +243,10 @@ export function useHost(
       setState("live");
       dataConnsRef.current.forEach((_, participantId) => {
         const call = peer.call(participantId, stream, { metadata: { mode } });
-        if (call) mediaCallsRef.current.set(participantId, call);
+        if (call) {
+          mediaCallsRef.current.set(participantId, call);
+          call.on("stream", setRemoteStream);
+        }
       });
       eventRef.current?.(`${mode === "video" ? "Video" : "Voice"} call started`, "success");
     } catch (err: unknown) {
@@ -258,7 +266,7 @@ export function useHost(
       const message =
         typeof navigator !== "undefined" &&
         /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
-          ? "Screen sharing isn’t supported in mobile browsers. Open this app on a desktop browser to broadcast your screen."
+          ? "Screen sharing is not available on mobile. Use voice or video here, or share your screen from desktop."
           : "This browser does not support screen sharing.";
       setError(message);
       eventRef.current?.(message, "error");
@@ -311,7 +319,7 @@ export function useHost(
       streamRef.current = sharingStream;
       setIsSharing(true);
       setState("live");
-      eventRef.current?.("Broadcast started", "success");
+      eventRef.current?.("Screen sharing started", "success");
 
       sharingStream.getVideoTracks()[0]?.addEventListener("ended", () => {
         // User stopped sharing via browser UI
@@ -347,7 +355,7 @@ export function useHost(
     mediaCallsRef.current.clear();
     setIsSharing(false);
     setState(dataConnsRef.current.size > 0 ? "connected" : "waiting");
-    eventRef.current?.("Broadcast ended", "info");
+    eventRef.current?.("Screen sharing ended", "info");
   }, []);
 
   const destroy = useCallback(() => {
@@ -370,6 +378,7 @@ export function useHost(
     stopSharing: stopSharingInternal,
     callMode,
     localStream,
+    remoteStream,
     incomingCall,
     acceptCall,
     rejectCall,
@@ -408,7 +417,7 @@ export function useViewer(
 
       conn.on("open", () => {
         setState("connected");
-        eventRef.current?.("Locked onto frequency", "success");
+        eventRef.current?.("Joined room", "success");
       });
       conn.on("close", () => {
         if (cancelled) return;
@@ -424,7 +433,7 @@ export function useViewer(
       setTimeout(() => {
         if (cancelled) return;
         if (!conn.open) {
-          setError("No station broadcasting on this frequency.");
+          setError("No active room found with this code.");
           setState("error");
         }
       }, 8000);
@@ -443,19 +452,19 @@ export function useViewer(
         setRemoteStream(stream);
         setCallMode(mode);
         setState("live");
-        eventRef.current?.("Broadcast incoming", "success");
+        eventRef.current?.("Screen sharing started", "success");
       });
       call.on("close", () => {
         setRemoteStream(null);
         setState((s) => (s === "live" ? "connected" : s));
-        eventRef.current?.("Broadcast ended", "info");
+        eventRef.current?.("Screen sharing ended", "info");
       });
     });
 
     peer.on("error", (err) => {
       console.error("Peer error", err);
       if (err.type === "peer-unavailable") {
-        setError("Frequency not found. Is the host online?");
+        setError("Room not found. Is the host online?");
       } else if (err.type === "network" || err.type === "server-error") {
         setError("Broker unreachable. Check your connection.");
       } else {

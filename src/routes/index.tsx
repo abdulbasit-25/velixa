@@ -64,133 +64,141 @@ function Landing() {
   return (
     // Note: this renders inside the root route's <main>, so this is a <div>
     // rather than another <main> — a page should only ever have one main landmark.
-    <div className="min-h-screen bg-ink text-text-primary">
-      <header className="flex items-center justify-between gap-3 border-b border-panel-line px-4 py-3.5 sm:px-6 sm:py-4 lg:px-10">
-        <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-          <div className="grid h-8 w-8 shrink-0 place-items-center border border-signal/60 text-signal">
-            <Radio className="h-4 w-4" />
-          </div>
-          <div className="flex min-w-0 flex-col leading-tight">
-            <span className="hidden truncate font-mono text-xs uppercase tracking-[0.3em] text-text-muted xs:block">
-              Real-time communication
-            </span>
+    <div className="relative min-h-screen overflow-hidden bg-ink text-text-primary">
+      {/* Ambient background grid + glow — this is what actually changes the "feel" */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)",
+          backgroundSize: "48px 48px",
+        }}
+      />
+      <div className="pointer-events-none absolute -top-40 right-[-10%] h-[32rem] w-[32rem] rounded-full bg-signal/10 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-[-15%] left-[-10%] h-[28rem] w-[28rem] rounded-full bg-link-cyan/10 blur-[120px]" />
+
+      <div className="relative flex min-h-screen flex-col">
+        <header className="flex items-center justify-between gap-3 px-4 py-4 sm:px-6 sm:py-5 lg:px-10">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <div className="grid h-8 w-8 shrink-0 place-items-center border border-signal/60 text-signal">
+              <Radio className="h-4 w-4" />
+            </div>
             <span className="font-mono text-sm tracking-widest">Velixa</span>
           </div>
-        </div>
-        <div className="flex shrink-0 items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted">
-          <Waveform state="idle" bars={12} />
-          <span className="hidden sm:inline">standby</span>
-        </div>
-      </header>
+          <div className="flex shrink-0 items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted">
+            <Waveform state="idle" bars={12} />
+            <span className="hidden sm:inline">standby</span>
+          </div>
+        </header>
 
-      <QrScanner open={scannerOpen} onClose={() => setScannerOpen(false)} />
+        <QrScanner open={scannerOpen} onClose={() => setScannerOpen(false)} />
 
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] xl:grid-cols-[minmax(0,11fr)_minmax(0,9fr)]">
-        {/* Action panel */}
-        <section className="flex flex-col justify-center gap-8 px-4 py-10 sm:gap-9 sm:px-8 sm:py-14 lg:px-12 lg:py-20 xl:px-16">
-          <div className="space-y-4">
-            <p className="font-mono text-xs uppercase tracking-[0.35em] text-signal">
+        {/* Main hero: centered, content-first, schematic as a floating badge rather than a full column */}
+        <main className="flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-6 sm:py-14 lg:px-10">
+          <div className="w-full max-w-3xl text-center">
+            <div className="mb-6 inline-flex items-center gap-2 border border-panel-line bg-panel px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted">
+              <span className="h-1.5 w-1.5 rounded-full bg-signal" />
               Real-time communication
-            </p>
-            <h1 className="text-3xl font-semibold leading-[1.1] tracking-tight text-text-primary sm:text-4xl sm:leading-[1.05] md:text-5xl">
-              Talk. Share. Connect.
+            </div>
+
+            <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
+              Talk. Share.
+              <br />
+              <span className="text-signal">Connect.</span>
             </h1>
-            <p className="max-w-md text-sm leading-relaxed text-text-muted">
+
+            <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-text-muted sm:text-base">
               Start a voice call, video call, or screen share with a room code. No accounts, no
               downloads, and no recording.
             </p>
-          </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
-            <button
-              onClick={host}
-              className={`group flex min-h-[4.5rem] items-center justify-between border border-signal bg-signal px-5 py-4 text-left text-ink transition-colors hover:bg-signal/90 active:bg-signal/80 ${focusRing}`}
-            >
-              <div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.3em] opacity-70">
-                  01 — Start here
-                </div>
-                <div className="mt-1 text-base font-semibold">Create room</div>
-              </div>
-              <ArrowRight className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1" />
-            </button>
+            {/* Floating device schematic, centered under the copy instead of a side column */}
+            <div className="mx-auto mt-8 w-full max-w-xs sm:max-w-sm">
+              <DeviceSchematic state="idle" label="STANDBY" />
+            </div>
 
-            <form
-              onSubmit={join}
-              className="flex min-h-[4.5rem] flex-col justify-center gap-2 border border-panel-line bg-panel p-4 transition-colors focus-within:border-link-cyan/60"
-            >
-              <label
-                htmlFor="room-code"
-                className="font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted"
+            {/* Actions: stacked full-width on mobile, side-by-side card group on larger screens */}
+            <div className="mx-auto mt-10 grid w-full max-w-xl grid-cols-1 gap-3 sm:grid-cols-5 sm:gap-4">
+              <button
+                onClick={host}
+                className={`group col-span-1 flex min-h-[4.75rem] items-center justify-between border border-signal bg-signal px-5 py-4 text-left text-ink transition-colors hover:bg-signal/90 active:bg-signal/80 sm:col-span-2 ${focusRing}`}
               >
-                02 — Join a room
-              </label>
-              <div className="flex items-center gap-2">
-                <input
-                  id="room-code"
-                  value={code}
-                  onChange={(e) => setCode(normalizeRoomCode(e.target.value))}
-                  placeholder="ABC123"
-                  maxLength={6}
-                  autoCapitalize="characters"
-                  autoComplete="off"
-                  inputMode="text"
-                  aria-label="Room code"
-                  aria-invalid={codeIsInvalid}
-                  className={`w-full min-w-0 bg-transparent font-mono text-lg tracking-[0.35em] text-text-primary outline-none placeholder:text-text-muted/40 ${focusRing}`}
-                />
-                {isTouchDevice && (
+                <div>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.3em] opacity-70">
+                    01 — Start
+                  </div>
+                  <div className="mt-1 text-base font-semibold">Create room</div>
+                </div>
+                <ArrowRight className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1" />
+              </button>
+
+              <form
+                onSubmit={join}
+                className="col-span-1 flex min-h-[4.75rem] flex-col justify-center gap-2 border border-panel-line bg-panel p-4 text-left transition-colors focus-within:border-link-cyan/60 sm:col-span-3"
+              >
+                <label
+                  htmlFor="room-code"
+                  className="font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted"
+                >
+                  02 — Join with a code
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    id="room-code"
+                    value={code}
+                    onChange={(e) => setCode(normalizeRoomCode(e.target.value))}
+                    placeholder="ABC123"
+                    maxLength={6}
+                    autoCapitalize="characters"
+                    autoComplete="off"
+                    inputMode="text"
+                    aria-label="Room code"
+                    aria-invalid={codeIsInvalid}
+                    className={`w-full min-w-0 bg-transparent font-mono text-lg tracking-[0.35em] text-text-primary outline-none placeholder:text-text-muted/40 ${focusRing}`}
+                  />
+                  {isTouchDevice && (
+                    <button
+                      type="button"
+                      onClick={() => setScannerOpen(true)}
+                      aria-label="Scan QR code"
+                      className={`grid h-11 w-11 shrink-0 place-items-center border border-link-cyan text-link-cyan transition-colors hover:bg-link-cyan/10 active:bg-link-cyan/20 ${focusRing}`}
+                    >
+                      <Camera className="h-4 w-4" />
+                    </button>
+                  )}
                   <button
-                    type="button"
-                    onClick={() => setScannerOpen(true)}
-                    aria-label="Scan QR code"
+                    type="submit"
+                    aria-label="Join room"
                     className={`grid h-11 w-11 shrink-0 place-items-center border border-link-cyan text-link-cyan transition-colors hover:bg-link-cyan/10 active:bg-link-cyan/20 ${focusRing}`}
                   >
-                    <Camera className="h-4 w-4" />
+                    <LogIn className="h-4 w-4" />
                   </button>
-                )}
-                <button
-                  type="submit"
-                  aria-label="Join room"
-                  className={`grid h-11 w-11 shrink-0 place-items-center border border-link-cyan text-link-cyan transition-colors hover:bg-link-cyan/10 active:bg-link-cyan/20 ${focusRing}`}
-                >
-                  <LogIn className="h-4 w-4" />
-                </button>
-              </div>
-            </form>
+                </div>
+              </form>
+            </div>
           </div>
+        </main>
 
-          <div className="grid grid-cols-3 gap-3 border-t border-panel-line pt-6 font-mono text-[9px] uppercase tracking-[0.2em] text-text-muted xs:text-[10px] sm:gap-6 sm:tracking-[0.3em]">
-            <div>
-              <div className="flex items-center gap-1.5 text-text-primary sm:gap-2">
-                <Mic className="h-3.5 w-3.5 shrink-0 text-signal" />
-                <span>Voice</span>
-              </div>
-              <div className="mt-1">Clear audio</div>
+        {/* Feature strip pinned to the bottom as a distinct band, not stacked under the form */}
+        <footer className="border-t border-panel-line px-4 py-5 sm:px-6 lg:px-10">
+          <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-x-8 gap-y-3 font-mono text-[10px] uppercase tracking-[0.25em] text-text-muted">
+            <div className="flex items-center gap-2">
+              <Mic className="h-3.5 w-3.5 text-signal" />
+              <span className="text-text-primary">Voice</span>
+              <span className="hidden text-text-muted/60 sm:inline">— clear audio</span>
             </div>
-            <div>
-              <div className="flex items-center gap-1.5 text-text-primary sm:gap-2">
-                <Video className="h-3.5 w-3.5 shrink-0 text-signal" />
-                <span>Video</span>
-              </div>
-              <div className="mt-1">Face to face</div>
+            <div className="flex items-center gap-2">
+              <Video className="h-3.5 w-3.5 text-signal" />
+              <span className="text-text-primary">Video</span>
+              <span className="hidden text-text-muted/60 sm:inline">— face to face</span>
             </div>
-            <div>
-              <div className="flex items-center gap-1.5 text-text-primary sm:gap-2">
-                <MonitorUp className="h-3.5 w-3.5 shrink-0 text-signal" />
-                <span>Share</span>
-              </div>
-              <div className="mt-1">Your screen</div>
+            <div className="flex items-center gap-2">
+              <MonitorUp className="h-3.5 w-3.5 text-signal" />
+              <span className="text-text-primary">Share</span>
+              <span className="hidden text-text-muted/60 sm:inline">— your screen</span>
             </div>
           </div>
-        </section>
-
-        {/* Schematic panel */}
-        <section className="flex items-center justify-center border-t border-panel-line bg-ink px-4 py-10 sm:px-8 sm:py-14 lg:border-l lg:border-t-0 lg:px-10 lg:py-16">
-          <div className="w-full max-w-md">
-            <DeviceSchematic state="idle" label="STANDBY" />
-          </div>
-        </section>
+        </footer>
       </div>
     </div>
   );

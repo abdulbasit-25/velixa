@@ -1,0 +1,11 @@
+TypeScript: Statically typed JavaScript for safer, self-documented code and editor tooling.
+React: Component-based UI library rendering the app and managing state.
+Vite: Fast dev server and build tool for bundling and HMR during development.
+Bun: JavaScript runtime and package manager used for fast local execution and scripts.
+ESLint: Linting tool enforcing code style and catching errors early.
+WebRTC: Peer-to-peer media (audio/video) and data channels used to send live audio/video streams.
+Signaling (WebSocket): Server channel to exchange SDP/ICE between peers to establish WebRTC connections.
+getUserMedia / MediaDevices API: Browser API to capture microphone/camera streams shared over WebRTC.
+STUN/TURN (ICE): Network traversal services used by WebRTC to connect peers across NATs and firewalls.
+Camera/QR APIs: Browser camera access and QR scanning for room/join flow.
+PeerConnection hook: App-level abstraction managing RTCPeerConnection lifecycle and track exchange.

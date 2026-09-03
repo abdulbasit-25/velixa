@@ -4,20 +4,18 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  /* ─────────────────────────────────────────────
-     Radius
-     ───────────────────────────────────────────── */
+/* =========================================================
+   VELIXA — MIDNIGHT + LIME + CYAN
+   ========================================================= */
 
+@theme inline {
+  /* Radius */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* ─────────────────────────────────────────────
-     Core shadcn / Tailwind tokens
-     ───────────────────────────────────────────── */
-
+  /* Core semantic colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
@@ -46,127 +44,134 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* ─────────────────────────────────────────────
-     Velixa brand palette
-     ───────────────────────────────────────────── */
+  /* =======================================================
+     Velixa Brand Palette
+     ======================================================= */
 
-  --color-velixa-bg: var(--velixa-bg);
-  --color-velixa-surface: var(--velixa-surface);
-  --color-velixa-surface-raised: var(--velixa-surface-raised);
-  --color-velixa-border: var(--velixa-border);
+  --color-ink: var(--ink);
+  --color-midnight: var(--midnight);
 
-  --color-velixa-primary: var(--velixa-primary);
-  --color-velixa-primary-hover: var(--velixa-primary-hover);
+  --color-panel: var(--panel);
+  --color-panel-raised: var(--panel-raised);
+  --color-panel-hover: var(--panel-hover);
+  --color-panel-line: var(--panel-line);
 
-  --color-velixa-blue: var(--velixa-blue);
-  --color-velixa-blue-soft: var(--velixa-blue-soft);
+  --color-lime: var(--lime);
+  --color-lime-hover: var(--lime-hover);
+  --color-lime-soft: var(--lime-soft);
 
-  --color-velixa-success: var(--velixa-success);
-  --color-velixa-warning: var(--velixa-warning);
-  --color-velixa-danger: var(--velixa-danger);
+  --color-cyan: var(--cyan);
+  --color-cyan-hover: var(--cyan-hover);
+  --color-cyan-soft: var(--cyan-soft);
 
-  --color-velixa-text: var(--velixa-text);
-  --color-velixa-text-secondary: var(--velixa-text-secondary);
-  --color-velixa-text-tertiary: var(--velixa-text-tertiary);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
 
-  /* ─────────────────────────────────────────────
-     Typography
-     ───────────────────────────────────────────── */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-dim: var(--text-dim);
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Typography */
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --font-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    monospace;
 }
 
-/* ═══════════════════════════════════════════════
-   VELIXA COLOR SYSTEM
-   ═══════════════════════════════════════════════ */
+/* =========================================================
+   ROOT DESIGN TOKENS
+   ========================================================= */
 
 :root {
-  /* ─────────────────────────────────────────────
-     Shape
-     ───────────────────────────────────────────── */
-
   --radius: 0.5rem;
 
-  /* ─────────────────────────────────────────────
-     Backgrounds
-     ───────────────────────────────────────────── */
+  /* -------------------------------------------------------
+     Midnight foundation
+     ------------------------------------------------------- */
 
-  --velixa-bg: #0b1020;
-  --velixa-surface: #12182a;
-  --velixa-surface-raised: #192139;
-  --velixa-border: #293451;
+  --ink: #080d12;
+  --midnight: #0b1117;
 
-  /* ─────────────────────────────────────────────
-     Primary brand
-     
-     Electric violet / indigo
-     ───────────────────────────────────────────── */
+  --panel: #101820;
+  --panel-raised: #17232c;
+  --panel-hover: #1d2b35;
 
-  --velixa-primary: #8b7cff;
-  --velixa-primary-hover: #a095ff;
+  --panel-line: #293943;
 
-  /* ─────────────────────────────────────────────
-     Secondary signal
-     
-     Cool blue
-     ───────────────────────────────────────────── */
+  /* -------------------------------------------------------
+     Lime — primary interaction color
+     ------------------------------------------------------- */
 
-  --velixa-blue: #4da3ff;
-  --velixa-blue-soft: #253d63;
+  --lime: #b8f34a;
+  --lime-hover: #c8ff68;
+  --lime-soft: #25351a;
 
-  /* ─────────────────────────────────────────────
-     Semantic states
-     ───────────────────────────────────────────── */
+  /* -------------------------------------------------------
+     Cyan — connection / live state color
+     ------------------------------------------------------- */
 
-  --velixa-success: #39d98a;
-  --velixa-warning: #f4b860;
-  --velixa-danger: #ff5c6c;
+  --cyan: #4de1d1;
+  --cyan-hover: #6aeee0;
+  --cyan-soft: #123633;
 
-  /* ─────────────────────────────────────────────
-     Text
-     ───────────────────────────────────────────── */
+  /* -------------------------------------------------------
+     System states
+     ------------------------------------------------------- */
 
-  --velixa-text: #f1f4fb;
-  --velixa-text-secondary: #aab4c8;
-  --velixa-text-tertiary: #707c94;
+  --success: #52e08c;
+  --warning: #f5c84c;
+  --danger: #ff5964;
 
-  /* ─────────────────────────────────────────────
-     Compatibility aliases
-     ───────────────────────────────────────────── */
+  /* -------------------------------------------------------
+     Typography
+     ------------------------------------------------------- */
 
-  --background: var(--velixa-bg);
-  --foreground: var(--velixa-text);
+  --text-primary: #f4f7f2;
+  --text-secondary: #c1cbc8;
+  --text-muted: #8d9aa2;
+  --text-dim: #5f6d75;
 
-  --card: var(--velixa-surface);
-  --card-foreground: var(--velixa-text);
+  /* -------------------------------------------------------
+     Semantic aliases
+     ------------------------------------------------------- */
 
-  --popover: var(--velixa-surface-raised);
-  --popover-foreground: var(--velixa-text);
+  --background: var(--ink);
+  --foreground: var(--text-primary);
 
-  --primary: var(--velixa-primary);
-  --primary-foreground: #ffffff;
+  --card: var(--panel);
+  --card-foreground: var(--text-primary);
 
-  --secondary: var(--velixa-surface);
-  --secondary-foreground: var(--velixa-text);
+  --popover: var(--panel-raised);
+  --popover-foreground: var(--text-primary);
 
-  --muted: #1a2236;
-  --muted-foreground: var(--velixa-text-secondary);
+  --primary: var(--lime);
+  --primary-foreground: #080d12;
 
-  --accent: #202a43;
-  --accent-foreground: var(--velixa-text);
+  --secondary: var(--panel-raised);
+  --secondary-foreground: var(--text-primary);
 
-  --destructive: var(--velixa-danger);
+  --muted: #162129;
+  --muted-foreground: var(--text-muted);
+
+  --accent: var(--panel-hover);
+  --accent-foreground: var(--text-primary);
+
+  --destructive: var(--danger);
   --destructive-foreground: #ffffff;
 
-  --border: var(--velixa-border);
-  --input: var(--velixa-border);
-  --ring: var(--velixa-primary);
+  --border: var(--panel-line);
+  --input: var(--panel-line);
+
+  --ring: var(--lime);
 }
 
-/* ═══════════════════════════════════════════════
+/* =========================================================
    BASE
-   ═══════════════════════════════════════════════ */
+   ========================================================= */
 
 @layer base {
   * {
@@ -174,7 +179,7 @@
   }
 
   html {
-    background-color: var(--velixa-bg);
+    background-color: var(--color-ink);
     color-scheme: dark;
     scroll-behavior: smooth;
   }
@@ -183,12 +188,21 @@
     min-height: 100vh;
     margin: 0;
 
-    background-color: var(--velixa-bg);
-    color: var(--velixa-text);
+    background:
+      radial-gradient(circle at 85% 10%, rgba(77, 225, 209, 0.035), transparent 28%),
+      radial-gradient(circle at 10% 90%, rgba(184, 243, 74, 0.025), transparent 30%),
+      var(--color-ink);
 
+    color: var(--color-text-primary);
     font-family: var(--font-sans);
+
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--color-lime);
+    color: var(--color-ink);
   }
 
   button,
@@ -206,20 +220,19 @@
     cursor: not-allowed;
   }
 
-  ::selection {
-    background-color: var(--velixa-primary);
-    color: #ffffff;
+  a {
+    color: inherit;
+    text-decoration: none;
   }
 
-  :focus-visible {
-    outline: 2px solid var(--velixa-primary);
-    outline-offset: 2px;
+  video {
+    max-width: 100%;
   }
 }
 
-/* ═══════════════════════════════════════════════
+/* =========================================================
    TYPOGRAPHY UTILITIES
-   ═══════════════════════════════════════════════ */
+   ========================================================= */
 
 @utility font-mono {
   font-family: var(--font-mono);
@@ -229,58 +242,70 @@
   text-wrap: balance;
 }
 
-/* ═══════════════════════════════════════════════
-   VELIXA SURFACE UTILITIES
-   ═══════════════════════════════════════════════ */
+/* =========================================================
+   VELIXA SURFACES
+   ========================================================= */
 
 @utility velixa-surface {
-  background-color: var(--velixa-surface);
-  border: 1px solid var(--velixa-border);
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-panel-line);
+  border-radius: var(--radius-lg);
 }
 
 @utility velixa-surface-raised {
-  background-color: var(--velixa-surface-raised);
-  border: 1px solid var(--velixa-border);
+  background-color: var(--color-panel-raised);
+  border: 1px solid var(--color-panel-line);
+  border-radius: var(--radius-lg);
 }
+
+@utility velixa-surface-hover {
+  background-color: var(--color-panel-hover);
+  border: 1px solid var(--color-panel-line);
+  border-radius: var(--radius-lg);
+}
+
+/* =========================================================
+   MEDIA STAGE
+   ========================================================= */
 
 @utility velixa-stage {
-  background-color: #070b14;
-  border: 1px solid var(--velixa-border);
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(circle at center, rgba(77, 225, 209, 0.025), transparent 60%), #05090d;
+
+  border: 1px solid var(--color-panel-line);
+  border-radius: var(--radius-lg);
+
+  aspect-ratio: 16 / 9;
 }
 
-/* ═══════════════════════════════════════════════
-   SIGNAL / STATUS ANIMATIONS
-   ═══════════════════════════════════════════════ */
+/* =========================================================
+   BRAND GLOW
+   ========================================================= */
 
-@keyframes velixa-pulse {
-  0%,
-  100% {
-    opacity: 0.45;
-    transform: scale(0.92);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1);
-  }
+@utility velixa-glow-lime {
+  box-shadow:
+    0 0 0 1px rgba(184, 243, 74, 0.12),
+    0 0 28px rgba(184, 243, 74, 0.08);
 }
 
-@keyframes velixa-live {
-  0%,
-  100% {
-    opacity: 0.55;
-  }
-
-  50% {
-    opacity: 1;
-  }
+@utility velixa-glow-cyan {
+  box-shadow:
+    0 0 0 1px rgba(77, 225, 209, 0.12),
+    0 0 28px rgba(77, 225, 209, 0.08);
 }
+
+/* =========================================================
+   SIGNAL INDICATOR
+   ========================================================= */
 
 @keyframes velixa-signal-pulse {
   0%,
   100% {
-    transform: scaleY(0.35);
-    opacity: 0.5;
+    transform: scaleY(0.45);
+    opacity: 0.55;
   }
 
   50% {
@@ -289,10 +314,72 @@
   }
 }
 
-@keyframes velixa-fade-in {
+@keyframes velixa-signal-idle {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@utility velixa-signal {
+  animation: velixa-signal-pulse 1s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* =========================================================
+   LIVE CONNECTION INDICATOR
+   ========================================================= */
+
+@keyframes velixa-live {
+  0%,
+  100% {
+    opacity: 0.45;
+    box-shadow: 0 0 0 0 rgba(77, 225, 209, 0);
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 0 4px rgba(77, 225, 209, 0.08);
+  }
+}
+
+@utility velixa-live {
+  animation: velixa-live 2s ease-in-out infinite;
+}
+
+/* =========================================================
+   PULSE
+   ========================================================= */
+
+@keyframes velixa-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@utility velixa-pulse {
+  animation: velixa-pulse 1.8s ease-in-out infinite;
+}
+
+/* =========================================================
+   FADE
+   ========================================================= */
+
+@keyframes velixa-fade {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(4px);
   }
 
   to {
@@ -301,7 +388,15 @@
   }
 }
 
-@keyframes velixa-scale-in {
+@utility velixa-fade {
+  animation: velixa-fade 180ms ease-out both;
+}
+
+/* =========================================================
+   SCALE IN
+   ========================================================= */
+
+@keyframes velixa-scale {
   from {
     opacity: 0;
     transform: scale(0.97);
@@ -313,96 +408,88 @@
   }
 }
 
-/* ═══════════════════════════════════════════════
-   ANIMATION UTILITIES
-   ═══════════════════════════════════════════════ */
-
-@utility animate-velixa-pulse {
-  animation: velixa-pulse 1.8s ease-in-out infinite;
+@utility velixa-scale {
+  animation: velixa-scale 180ms ease-out both;
 }
 
-@utility animate-velixa-live {
-  animation: velixa-live 1.6s ease-in-out infinite;
-}
-
-@utility animate-signal-pulse {
-  animation: velixa-signal-pulse 0.8s ease-in-out infinite;
-}
-
-@utility animate-velixa-fade {
-  animation: velixa-fade-in 240ms ease-out both;
-}
-
-@utility animate-velixa-scale {
-  animation: velixa-scale-in 180ms ease-out both;
-}
-
-/* ═══════════════════════════════════════════════
+/* =========================================================
    SCROLLBAR
-   ═══════════════════════════════════════════════ */
+   ========================================================= */
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--velixa-border) transparent;
+  scrollbar-color: var(--color-panel-line) transparent;
 }
 
-*::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-*::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: transparent;
 }
 
-*::-webkit-scrollbar-thumb {
-  background: var(--velixa-border);
+::-webkit-scrollbar-thumb {
+  background: var(--color-panel-line);
   border-radius: 999px;
 }
 
-*::-webkit-scrollbar-thumb:hover {
-  background: var(--velixa-text-tertiary);
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-dim);
 }
 
-/* ═══════════════════════════════════════════════
-   MEDIA
-   ═══════════════════════════════════════════════ */
+/* =========================================================
+   FOCUS STATES
+   ========================================================= */
 
-video {
-  max-width: 100%;
+:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 2px;
 }
 
 video:focus-visible {
-  outline: 2px solid var(--velixa-primary);
-  outline-offset: -2px;
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
 }
 
-/* ═══════════════════════════════════════════════
-   REDUCED MOTION
-   ═══════════════════════════════════════════════ */
+/* =========================================================
+   MEDIA
+   ========================================================= */
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+video {
+  background-color: #05090d;
+}
+
+video[playsinline] {
+  object-fit: contain;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
   }
 
+  .velixa-stage {
+    border-radius: 0.375rem;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* ═══════════════════════════════════════════════
-   MOBILE
-   ═══════════════════════════════════════════════ */
-
-@media (max-width: 640px) {
-  html,
-  body {
-    overflow-x: hidden;
+    transition-duration: 0.01ms !important;
   }
 }

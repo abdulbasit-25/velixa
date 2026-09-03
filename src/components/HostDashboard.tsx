@@ -27,13 +27,13 @@ export function HostDashboard({
 
   const statusText =
     state === "initializing"
-      ? "Opening frequency..."
+      ? "Opening room..."
       : state === "waiting"
-        ? `Waiting for a device to tune in on ${roomCode}.`
+        ? `Waiting for someone to join room ${roomCode}.`
         : state === "connected"
-          ? `${viewerCount} ${viewerCount === 1 ? "viewer" : "viewers"} standing by.`
+          ? `${viewerCount} ${viewerCount === 1 ? "participant" : "participants"} ready.`
           : state === "live"
-            ? `Live to ${viewerCount} ${viewerCount === 1 ? "viewer" : "viewers"}.`
+            ? `Active with ${viewerCount} ${viewerCount === 1 ? "participant" : "participants"}.`
             : "";
 
   const waveState = state === "live" ? "live" : state === "connected" ? "connected" : "idle";
@@ -43,9 +43,7 @@ export function HostDashboard({
       {/* Main */}
       <section className="flex flex-col gap-8 px-6 py-10 lg:px-12 lg:py-14">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.35em] text-signal">
-            Your frequency
-          </p>
+          <p className="font-mono text-xs uppercase tracking-[0.35em] text-signal">Room created</p>
           <div className="mt-3 flex flex-wrap items-end gap-4">
             <div className="font-mono text-6xl tracking-[0.35em] text-text-primary sm:text-7xl">
               {roomCode}
@@ -157,7 +155,7 @@ export function HostDashboard({
                 <div className="font-mono text-[10px] uppercase tracking-[0.3em] opacity-70">
                   Transmit
                 </div>
-                <div className="mt-1 text-xl font-semibold">Go Live</div>
+                <div className="mt-1 text-xl font-semibold">Share screen</div>
               </div>
               <MonitorUp className="h-6 w-6" />
             </button>
@@ -171,7 +169,7 @@ export function HostDashboard({
                 <div className="font-mono text-[10px] uppercase tracking-[0.3em] opacity-80">
                   Cut signal
                 </div>
-                <div className="mt-1 text-xl font-semibold">End Broadcast</div>
+                <div className="mt-1 text-xl font-semibold">Stop sharing</div>
               </div>
               <MonitorX className="h-6 w-6" />
             </button>
@@ -179,7 +177,7 @@ export function HostDashboard({
           <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-text-muted">
             {canShareScreen
               ? "Choose a screen, window, or tab when your browser prompts."
-              : "Screen sharing is not available on this device or browser. Use a desktop browser to broadcast."}
+              : "Screen sharing is not available in this browser. You can still make a voice or video call."}
           </p>
         </div>
       </section>
@@ -188,7 +186,7 @@ export function HostDashboard({
       <aside className="border-t border-panel-line bg-panel/40 px-6 py-10 lg:border-l lg:border-t-0 lg:px-8">
         <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted">
           <QrCode className="h-3.5 w-3.5" />
-          Scan to tune in
+          Scan to join
         </div>
         <div className="mt-6 flex justify-center border border-panel-line bg-white p-5">
           <QRCodeSVG value={joinUrl} size={220} bgColor="#ffffff" fgColor="#0E1116" level="M" />

@@ -57,16 +57,16 @@ function About() {
             </div>
           </div>
           <p className="max-w-2xl text-sm leading-relaxed text-text-muted">
-            Velixa is a lightweight browser-based screen sharing experience built for quick
-            peer-to-peer connection without accounts or downloads.
+            Velixa is a lightweight browser-based communication tool for quick voice calls, video
+            calls, and screen sharing without accounts or downloads.
           </p>
         </div>
 
         <section className="space-y-4 rounded border border-panel-line bg-panel p-5 sm:p-6">
           <h2 className="text-xl font-semibold">Creator</h2>
           <p className="text-sm leading-relaxed text-text-muted">
-            Built by Abdul Basit, also known as Archer, this project is designed to make live screen
-            sharing simple, private, and easy to use.
+            Built by Abdul Basit, also known as Archer, this project is designed to make browser
+            communication simple, direct, and easy to use.
           </p>
           <p className="text-sm leading-relaxed text-text-muted">
             If you want to learn more, visit{" "}
@@ -100,13 +100,14 @@ function About() {
         <section className="space-y-4 rounded border border-panel-line bg-panel p-5 sm:p-6">
           <h2 className="text-xl font-semibold">Project</h2>
           <p className="text-sm leading-relaxed text-text-muted">
-            Velixa uses peer-to-peer browser technology to broadcast a shared screen to connected
-            devices. It focuses on direct connections, no sign-in required, and a minimal interface.
+            Velixa uses peer-to-peer browser technology to connect participants for voice, video,
+            and screen sharing. It focuses on direct connections, no sign-in required, and a calm,
+            minimal interface.
           </p>
           <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-text-muted marker:text-signal">
             <li>No user accounts or registration</li>
-            <li>Live broadcast to one or more viewers</li>
-            <li>Simple frequency-style room codes</li>
+            <li>Voice calls, video calls, and screen sharing</li>
+            <li>Simple six-character room codes</li>
           </ul>
 
           <div className="flex flex-wrap gap-2 pt-2">

@@ -21,7 +21,7 @@ export const Route = createFileRoute("/room/$roomId")({
         name: "description",
         content: `Join room ${params.roomId} for a voice call, video call, or screen share.`,
       },
-      { property: "og:title", content: `Frequency ${params.roomId}` },
+      { property: "og:title", content: `Room ${params.roomId}` },
       { property: "og:description", content: "Voice, video, and screen sharing through Velixa." },
       { property: "og:image", content: "https://Velixa.vercel.app/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },

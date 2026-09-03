@@ -1,11 +1,11 @@
 <div align="center">
-  <img src="src/assests/favicon.ico" alt="Viorax logo" width="90" style="border-radius: 50%;" />
+  <img src="src/assests/favicon.ico" alt="Velixa logo" width="90" style="border-radius: 50%;" />
 
-# 📡 Viorax
+# 📡 Velixa
 
 **Live browser-to-browser screen sharing. No accounts. No downloads. Just connect and share.**
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen?style=flat-square)](https://Viorax.vercel.app)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen?style=flat-square)](https://Velixa.vercel.app)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=flat-square&logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-Bundler-646CFF?style=flat-square&logo=vite&logoColor=white)
@@ -14,19 +14,20 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ff69b4?style=flat-square)](#-contributing)
 ![License](https://img.shields.io/badge/license-unlicensed-lightgrey?style=flat-square)
 
-🌐 **Live Demo:** https://Viorax.vercel.app
+🌐 **Live Demo:** https://Velixa.vercel.app
+
 </div>
 
-Viorax is a lightweight, frontend-only screen sharing application that lets anyone broadcast their screen instantly using a simple 6-character room code. Built on WebRTC, all streaming happens directly between peers, meaning no recordings, no stored video, and no unnecessary accounts.
+Velixa is a lightweight, frontend-only screen sharing application that lets anyone broadcast their screen instantly using a simple 6-character room code. Built on WebRTC, all streaming happens directly between peers, meaning no recordings, no stored video, and no unnecessary accounts.
 
 ## 📸 App Preview
 
 **Desktop experience**
 
 <div align="center">
-  <img src="src/assests/desktop-home.png" alt="Viorax desktop home screen" width="400" />
+  <img src="src/assests/desktop-home.png" alt="Velixa desktop home screen" width="400" />
   &nbsp;&nbsp;
-  <img src="src/assests/connection established.png" alt="Viorax connection established screen" width="400" />
+  <img src="src/assests/connection established.png" alt="Velixa connection established screen" width="400" />
   <br/>
   <sub><b>Desktop Home</b> — launch or join a session &nbsp;•&nbsp; <b>Connection Established</b> — live peer link status</sub>
 </div>
@@ -36,11 +37,11 @@ Viorax is a lightweight, frontend-only screen sharing application that lets anyo
 **Mobile & content screens**
 
 <div align="center">
-  <img src="src/assests/mobile view.png" alt="Viorax mobile view" width="200" />
+  <img src="src/assests/mobile view.png" alt="Velixa mobile view" width="200" />
   &nbsp;&nbsp;
-  <img src="src/assests/about section.jpg" alt="Viorax about section" width="200" />
+  <img src="src/assests/about section.jpg" alt="Velixa about section" width="200" />
   &nbsp;&nbsp;
-  <img src="src/assests/help section.jpg" alt="Viorax help section" width="200" />
+  <img src="src/assests/help section.jpg" alt="Velixa help section" width="200" />
   <br/>
   <sub><b>Mobile View</b> &nbsp;•&nbsp; <b>About Section</b> &nbsp;•&nbsp; <b>Help Section</b></sub>
 </div>
@@ -157,7 +158,7 @@ public/
 
 | Route    | Description                      |
 | -------- | -------------------------------- |
-| `/`      | Create or join a Viorax          |
+| `/`      | Create or join a Velixa          |
 | `/about` | About the project and creator    |
 | `/help`  | User guide for hosts and viewers |
 
@@ -165,7 +166,7 @@ public/
 
 ## ⚙️ How It Works
 
-1. Create a new Viorax.
+1. Create a new Velixa.
 2. Receive a unique 6-character room code.
 3. Share the code or QR code with others.
 4. Viewers join using the code or by scanning the QR code.
@@ -175,7 +176,7 @@ public/
 
 ## 🔒 Privacy
 
-Viorax is built around peer-to-peer communication.
+Velixa is built around peer-to-peer communication.
 
 - No user accounts
 - No uploaded recordings
@@ -197,7 +198,7 @@ Contributions, issues, and feature requests are welcome! Feel free to open a pul
 
 ## 🌐 Live Demo
 
-https://Viorax.vercel.app
+https://Velixa.vercel.app
 
 ---
 

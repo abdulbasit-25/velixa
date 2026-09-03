@@ -38,7 +38,13 @@ export function QrScanner({ open, onClose }: QrScannerProps) {
     if (!open) return;
 
     let cancelled = false;
-    let scannerInstance: any = null;
+    let scannerInstance: {
+      render: (
+        onScan: (decodedText: string) => void,
+        onError: (errorMessage: string) => void,
+      ) => void | Promise<void>;
+      clear: () => Promise<void>;
+    } | null = null;
 
     const startScanner = async () => {
       if (typeof window === "undefined" || !navigator.mediaDevices?.getUserMedia) {
@@ -105,7 +111,7 @@ export function QrScanner({ open, onClose }: QrScannerProps) {
             <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted">
               Scan QR
             </p>
-            <h3 className="mt-1 text-lg font-semibold text-text-primary">Join a frequency</h3>
+            <h3 className="mt-1 text-lg font-semibold text-text-primary">Join a room</h3>
           </div>
           <button
             type="button"

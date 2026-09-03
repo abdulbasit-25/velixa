@@ -4,484 +4,119 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* =========================================================
-   VELIXA — MIDNIGHT + LIME + CYAN
-   ========================================================= */
-
 @theme inline {
-  /* Radius */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-
-  /* Core semantic colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* =======================================================
-     Velixa Brand Palette
-     ======================================================= */
-
+  /* Velixa palette */
   --color-ink: var(--ink);
-  --color-midnight: var(--midnight);
-
   --color-panel: var(--panel);
-  --color-panel-raised: var(--panel-raised);
-  --color-panel-hover: var(--panel-hover);
   --color-panel-line: var(--panel-line);
-
-  --color-lime: var(--lime);
-  --color-lime-hover: var(--lime-hover);
-  --color-lime-soft: var(--lime-soft);
-
-  --color-cyan: var(--cyan);
-  --color-cyan-hover: var(--cyan-hover);
-  --color-cyan-soft: var(--cyan-soft);
-
-  --color-success: var(--success);
-  --color-warning: var(--warning);
-  --color-danger: var(--danger);
-
+  --color-signal: var(--signal);
+  --color-link-cyan: var(--link-cyan);
   --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
-  --color-text-dim: var(--text-dim);
 
-  /* Typography */
-  --font-sans:
-    "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-
-  --font-mono:
-    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
-/* =========================================================
-   ROOT DESIGN TOKENS
-   ========================================================= */
-
 :root {
-  --radius: 0.5rem;
+  --radius: 0.375rem;
 
-  /* -------------------------------------------------------
-     Midnight foundation
-     ------------------------------------------------------- */
-
-  --ink: #080d12;
-  --midnight: #0b1117;
-
-  --panel: #101820;
-  --panel-raised: #17232c;
-  --panel-hover: #1d2b35;
-
-  --panel-line: #293943;
-
-  /* -------------------------------------------------------
-     Lime — primary interaction color
-     ------------------------------------------------------- */
-
-  --lime: #b8f34a;
-  --lime-hover: #c8ff68;
-  --lime-soft: #25351a;
-
-  /* -------------------------------------------------------
-     Cyan — connection / live state color
-     ------------------------------------------------------- */
-
-  --cyan: #4de1d1;
-  --cyan-hover: #6aeee0;
-  --cyan-soft: #123633;
-
-  /* -------------------------------------------------------
-     System states
-     ------------------------------------------------------- */
-
-  --success: #52e08c;
-  --warning: #f5c84c;
-  --danger: #ff5964;
-
-  /* -------------------------------------------------------
-     Typography
-     ------------------------------------------------------- */
-
-  --text-primary: #f4f7f2;
-  --text-secondary: #c1cbc8;
-  --text-muted: #8d9aa2;
-  --text-dim: #5f6d75;
-
-  /* -------------------------------------------------------
-     Semantic aliases
-     ------------------------------------------------------- */
+  --ink: #0e1116;
+  --panel: #171b22;
+  --panel-line: #262c36;
+  --signal: #f2a93b;
+  --link-cyan: #5ac8c8;
+  --text-primary: #e4e7ec;
+  --text-muted: #8b93a1;
 
   --background: var(--ink);
   --foreground: var(--text-primary);
-
   --card: var(--panel);
   --card-foreground: var(--text-primary);
-
-  --popover: var(--panel-raised);
+  --popover: var(--panel);
   --popover-foreground: var(--text-primary);
-
-  --primary: var(--lime);
-  --primary-foreground: #080d12;
-
-  --secondary: var(--panel-raised);
+  --primary: var(--signal);
+  --primary-foreground: #0e1116;
+  --secondary: var(--panel);
   --secondary-foreground: var(--text-primary);
-
-  --muted: #162129;
+  --muted: #1f242c;
   --muted-foreground: var(--text-muted);
-
-  --accent: var(--panel-hover);
+  --accent: #1f242c;
   --accent-foreground: var(--text-primary);
-
-  --destructive: var(--danger);
+  --destructive: #e5484d;
   --destructive-foreground: #ffffff;
-
   --border: var(--panel-line);
   --input: var(--panel-line);
-
-  --ring: var(--lime);
+  --ring: var(--signal);
 }
-
-/* =========================================================
-   BASE
-   ========================================================= */
 
 @layer base {
   * {
     border-color: var(--color-border);
   }
 
-  html {
-    background-color: var(--color-ink);
-    color-scheme: dark;
-    scroll-behavior: smooth;
-  }
-
+  html,
   body {
-    min-height: 100vh;
-    margin: 0;
-
-    background:
-      radial-gradient(circle at 85% 10%, rgba(77, 225, 209, 0.035), transparent 28%),
-      radial-gradient(circle at 10% 90%, rgba(184, 243, 74, 0.025), transparent 30%),
-      var(--color-ink);
-
+    background-color: var(--color-ink);
     color: var(--color-text-primary);
     font-family: var(--font-sans);
-
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {
-    background-color: var(--color-lime);
-    color: var(--color-ink);
-  }
-
-  button,
-  input,
-  textarea,
-  select {
-    font: inherit;
-  }
-
-  button {
-    cursor: pointer;
-  }
-
-  button:disabled {
-    cursor: not-allowed;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  video {
-    max-width: 100%;
+    background-color: var(--color-signal);
+    color: #0e1116;
   }
 }
-
-/* =========================================================
-   TYPOGRAPHY UTILITIES
-   ========================================================= */
 
 @utility font-mono {
   font-family: var(--font-mono);
 }
 
-@utility text-balance {
-  text-wrap: balance;
-}
-
-/* =========================================================
-   VELIXA SURFACES
-   ========================================================= */
-
-@utility velixa-surface {
-  background-color: var(--color-panel);
-  border: 1px solid var(--color-panel-line);
-  border-radius: var(--radius-lg);
-}
-
-@utility velixa-surface-raised {
-  background-color: var(--color-panel-raised);
-  border: 1px solid var(--color-panel-line);
-  border-radius: var(--radius-lg);
-}
-
-@utility velixa-surface-hover {
-  background-color: var(--color-panel-hover);
-  border: 1px solid var(--color-panel-line);
-  border-radius: var(--radius-lg);
-}
-
-/* =========================================================
-   MEDIA STAGE
-   ========================================================= */
-
-@utility velixa-stage {
-  position: relative;
-  overflow: hidden;
-
-  background:
-    radial-gradient(circle at center, rgba(77, 225, 209, 0.025), transparent 60%), #05090d;
-
-  border: 1px solid var(--color-panel-line);
-  border-radius: var(--radius-lg);
-
-  aspect-ratio: 16 / 9;
-}
-
-/* =========================================================
-   BRAND GLOW
-   ========================================================= */
-
-@utility velixa-glow-lime {
-  box-shadow:
-    0 0 0 1px rgba(184, 243, 74, 0.12),
-    0 0 28px rgba(184, 243, 74, 0.08);
-}
-
-@utility velixa-glow-cyan {
-  box-shadow:
-    0 0 0 1px rgba(77, 225, 209, 0.12),
-    0 0 28px rgba(77, 225, 209, 0.08);
-}
-
-/* =========================================================
-   SIGNAL INDICATOR
-   ========================================================= */
-
-@keyframes velixa-signal-pulse {
+@keyframes signal-pulse {
   0%,
   100% {
-    transform: scaleY(0.45);
-    opacity: 0.55;
+    transform: scaleY(0.4);
+    opacity: 0.7;
   }
-
   50% {
     transform: scaleY(1);
     opacity: 1;
   }
 }
 
-@keyframes velixa-signal-idle {
+@keyframes signal-idle {
   0%,
   100% {
-    opacity: 0.3;
+    opacity: 0.35;
   }
-
   50% {
-    opacity: 0.55;
+    opacity: 0.5;
   }
 }
-
-@utility velixa-signal {
-  animation: velixa-signal-pulse 1s ease-in-out infinite;
-  transform-origin: center;
-}
-
-/* =========================================================
-   LIVE CONNECTION INDICATOR
-   ========================================================= */
-
-@keyframes velixa-live {
-  0%,
-  100% {
-    opacity: 0.45;
-    box-shadow: 0 0 0 0 rgba(77, 225, 209, 0);
-  }
-
-  50% {
-    opacity: 1;
-    box-shadow: 0 0 0 4px rgba(77, 225, 209, 0.08);
-  }
-}
-
-@utility velixa-live {
-  animation: velixa-live 2s ease-in-out infinite;
-}
-
-/* =========================================================
-   PULSE
-   ========================================================= */
-
-@keyframes velixa-pulse {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-}
-
-@utility velixa-pulse {
-  animation: velixa-pulse 1.8s ease-in-out infinite;
-}
-
-/* =========================================================
-   FADE
-   ========================================================= */
-
-@keyframes velixa-fade {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@utility velixa-fade {
-  animation: velixa-fade 180ms ease-out both;
-}
-
-/* =========================================================
-   SCALE IN
-   ========================================================= */
-
-@keyframes velixa-scale {
-  from {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@utility velixa-scale {
-  animation: velixa-scale 180ms ease-out both;
-}
-
-/* =========================================================
-   SCROLLBAR
-   ========================================================= */
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-panel-line) transparent;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-panel-line);
-  border-radius: 999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-dim);
-}
-
-/* =========================================================
-   FOCUS STATES
-   ========================================================= */
-
-:focus-visible {
-  outline: 2px solid var(--color-lime);
-  outline-offset: 2px;
-}
-
-video:focus-visible {
-  outline: 2px solid var(--color-cyan);
-  outline-offset: 2px;
-}
-
-/* =========================================================
-   MEDIA
-   ========================================================= */
-
-video {
-  background-color: #05090d;
-}
-
-video[playsinline] {
-  object-fit: contain;
-}
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 640px) {
-  body {
-    overflow-x: hidden;
-  }
-
-  .velixa-stage {
-    border-radius: 0.375rem;
-  }
-}
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
   *,

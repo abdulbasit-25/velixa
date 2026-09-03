@@ -18,7 +18,7 @@
 
 </div>
 
-Velixa is a lightweight, frontend-only screen sharing application that lets anyone broadcast their screen instantly using a simple 6-character room code. Built on WebRTC, all streaming happens directly between peers, meaning no recordings, no stored video, and no unnecessary accounts.
+Velixa is a lightweight, frontend-only communication application for voice calls, video calls, and screen sharing using a simple 6-character room code. Built on WebRTC, media travels directly between peers, with no recordings, stored video, or unnecessary accounts.
 
 ## 📸 App Preview
 
@@ -58,10 +58,10 @@ Velixa is a lightweight, frontend-only screen sharing application that lets anyo
 
 ## ✨ Features
 
-- 📡 **Instant Broadcasting** — Start sharing your screen in seconds.
-- 🔢 **6-Character Room Codes** — Easy-to-share frequency-style codes.
+- 📡 **Real-Time Calls** — Start voice, video, or screen sharing in seconds.
+- 🔢 **6-Character Room Codes** — Easy-to-share room codes.
 - 🔒 **Peer-to-Peer Streaming** — Direct WebRTC connections with no video stored on a server.
-- 👥 **Multi-Viewer Support** — Broadcast to multiple viewers simultaneously.
+- 👥 **Participant Support** — Connect participants through the same room.
 - 📱 **QR Code Joining** — Scan and join instantly from a mobile device.
 - 💻 **Fully Responsive** — Optimized for desktop hosts and mobile viewers.
 - ⚡ **No Accounts Required** — Open a room and start immediately.

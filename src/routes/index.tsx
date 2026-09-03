@@ -10,21 +10,21 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Viorax — Broadcast your screen to any device" },
+      { title: "Velixa — Broadcast your screen to any device" },
       {
         name: "description",
         content:
           "Open a frequency, share the code, go live. Frontend-only WebRTC screen sharing with no accounts.",
       },
-      { property: "og:title", content: "Viorax — Broadcast your screen to any device" },
+      { property: "og:title", content: "Velixa — Broadcast your screen to any device" },
       {
         property: "og:description",
         content: "Broadcast your screen to any device. No accounts, no downloads.",
       },
-      { property: "og:image", content: "https://Viorax.vercel.app/og-image.jpg" },
+      { property: "og:image", content: "https://Velixa.vercel.app/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://Viorax.vercel.app/og-image.jpg" },
-      { name: "twitter:image:alt", content: "Viorax logo and screen sharing preview" },
+      { name: "twitter:image", content: "https://Velixa.vercel.app/og-image.jpg" },
+      { name: "twitter:image:alt", content: "Velixa logo and screen sharing preview" },
     ],
   }),
   component: Landing,
@@ -82,7 +82,7 @@ function Landing() {
             <span className="font-mono text-xs uppercase tracking-[0.3em] text-text-muted">
               Station
             </span>
-            <span className="font-mono text-sm tracking-widest">Viorax</span>
+            <span className="font-mono text-sm tracking-widest">Velixa</span>
           </div>
         </div>
         <div className="hidden items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted sm:flex">

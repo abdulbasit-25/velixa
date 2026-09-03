@@ -5,126 +5,404 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* ─────────────────────────────────────────────
+     Radius
+     ───────────────────────────────────────────── */
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* ─────────────────────────────────────────────
+     Core shadcn / Tailwind tokens
+     ───────────────────────────────────────────── */
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Velixa palette */
-  --color-ink: var(--ink);
-  --color-panel: var(--panel);
-  --color-panel-line: var(--panel-line);
-  --color-signal: var(--signal);
-  --color-link-cyan: var(--link-cyan);
-  --color-text-primary: var(--text-primary);
-  --color-text-muted: var(--text-muted);
+  /* ─────────────────────────────────────────────
+     Velixa brand palette
+     ───────────────────────────────────────────── */
 
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-velixa-bg: var(--velixa-bg);
+  --color-velixa-surface: var(--velixa-surface);
+  --color-velixa-surface-raised: var(--velixa-surface-raised);
+  --color-velixa-border: var(--velixa-border);
+
+  --color-velixa-primary: var(--velixa-primary);
+  --color-velixa-primary-hover: var(--velixa-primary-hover);
+
+  --color-velixa-blue: var(--velixa-blue);
+  --color-velixa-blue-soft: var(--velixa-blue-soft);
+
+  --color-velixa-success: var(--velixa-success);
+  --color-velixa-warning: var(--velixa-warning);
+  --color-velixa-danger: var(--velixa-danger);
+
+  --color-velixa-text: var(--velixa-text);
+  --color-velixa-text-secondary: var(--velixa-text-secondary);
+  --color-velixa-text-tertiary: var(--velixa-text-tertiary);
+
+  /* ─────────────────────────────────────────────
+     Typography
+     ───────────────────────────────────────────── */
+
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
+
+/* ═══════════════════════════════════════════════
+   VELIXA COLOR SYSTEM
+   ═══════════════════════════════════════════════ */
 
 :root {
-  --radius: 0.375rem;
+  /* ─────────────────────────────────────────────
+     Shape
+     ───────────────────────────────────────────── */
 
-  --ink: #0e1116;
-  --panel: #171b22;
-  --panel-line: #262c36;
-  --signal: #f2a93b;
-  --link-cyan: #5ac8c8;
-  --text-primary: #e4e7ec;
-  --text-muted: #8b93a1;
+  --radius: 0.5rem;
 
-  --background: var(--ink);
-  --foreground: var(--text-primary);
-  --card: var(--panel);
-  --card-foreground: var(--text-primary);
-  --popover: var(--panel);
-  --popover-foreground: var(--text-primary);
-  --primary: var(--signal);
-  --primary-foreground: #0e1116;
-  --secondary: var(--panel);
-  --secondary-foreground: var(--text-primary);
-  --muted: #1f242c;
-  --muted-foreground: var(--text-muted);
-  --accent: #1f242c;
-  --accent-foreground: var(--text-primary);
-  --destructive: #e5484d;
+  /* ─────────────────────────────────────────────
+     Backgrounds
+     ───────────────────────────────────────────── */
+
+  --velixa-bg: #0b1020;
+  --velixa-surface: #12182a;
+  --velixa-surface-raised: #192139;
+  --velixa-border: #293451;
+
+  /* ─────────────────────────────────────────────
+     Primary brand
+     
+     Electric violet / indigo
+     ───────────────────────────────────────────── */
+
+  --velixa-primary: #8b7cff;
+  --velixa-primary-hover: #a095ff;
+
+  /* ─────────────────────────────────────────────
+     Secondary signal
+     
+     Cool blue
+     ───────────────────────────────────────────── */
+
+  --velixa-blue: #4da3ff;
+  --velixa-blue-soft: #253d63;
+
+  /* ─────────────────────────────────────────────
+     Semantic states
+     ───────────────────────────────────────────── */
+
+  --velixa-success: #39d98a;
+  --velixa-warning: #f4b860;
+  --velixa-danger: #ff5c6c;
+
+  /* ─────────────────────────────────────────────
+     Text
+     ───────────────────────────────────────────── */
+
+  --velixa-text: #f1f4fb;
+  --velixa-text-secondary: #aab4c8;
+  --velixa-text-tertiary: #707c94;
+
+  /* ─────────────────────────────────────────────
+     Compatibility aliases
+     ───────────────────────────────────────────── */
+
+  --background: var(--velixa-bg);
+  --foreground: var(--velixa-text);
+
+  --card: var(--velixa-surface);
+  --card-foreground: var(--velixa-text);
+
+  --popover: var(--velixa-surface-raised);
+  --popover-foreground: var(--velixa-text);
+
+  --primary: var(--velixa-primary);
+  --primary-foreground: #ffffff;
+
+  --secondary: var(--velixa-surface);
+  --secondary-foreground: var(--velixa-text);
+
+  --muted: #1a2236;
+  --muted-foreground: var(--velixa-text-secondary);
+
+  --accent: #202a43;
+  --accent-foreground: var(--velixa-text);
+
+  --destructive: var(--velixa-danger);
   --destructive-foreground: #ffffff;
-  --border: var(--panel-line);
-  --input: var(--panel-line);
-  --ring: var(--signal);
+
+  --border: var(--velixa-border);
+  --input: var(--velixa-border);
+  --ring: var(--velixa-primary);
 }
+
+/* ═══════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════ */
 
 @layer base {
   * {
     border-color: var(--color-border);
   }
 
-  html,
+  html {
+    background-color: var(--velixa-bg);
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
   body {
-    background-color: var(--color-ink);
-    color: var(--color-text-primary);
+    min-height: 100vh;
+    margin: 0;
+
+    background-color: var(--velixa-bg);
+    color: var(--velixa-text);
+
     font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
   }
 
   ::selection {
-    background-color: var(--color-signal);
-    color: #0e1116;
+    background-color: var(--velixa-primary);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--velixa-primary);
+    outline-offset: 2px;
   }
 }
+
+/* ═══════════════════════════════════════════════
+   TYPOGRAPHY UTILITIES
+   ═══════════════════════════════════════════════ */
 
 @utility font-mono {
   font-family: var(--font-mono);
 }
 
-@keyframes signal-pulse {
+@utility text-balance {
+  text-wrap: balance;
+}
+
+/* ═══════════════════════════════════════════════
+   VELIXA SURFACE UTILITIES
+   ═══════════════════════════════════════════════ */
+
+@utility velixa-surface {
+  background-color: var(--velixa-surface);
+  border: 1px solid var(--velixa-border);
+}
+
+@utility velixa-surface-raised {
+  background-color: var(--velixa-surface-raised);
+  border: 1px solid var(--velixa-border);
+}
+
+@utility velixa-stage {
+  background-color: #070b14;
+  border: 1px solid var(--velixa-border);
+}
+
+/* ═══════════════════════════════════════════════
+   SIGNAL / STATUS ANIMATIONS
+   ═══════════════════════════════════════════════ */
+
+@keyframes velixa-pulse {
   0%,
   100% {
-    transform: scaleY(0.4);
-    opacity: 0.7;
+    opacity: 0.45;
+    transform: scale(0.92);
   }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes velixa-live {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes velixa-signal-pulse {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+    opacity: 0.5;
+  }
+
   50% {
     transform: scaleY(1);
     opacity: 1;
   }
 }
 
-@keyframes signal-idle {
-  0%,
-  100% {
-    opacity: 0.35;
+@keyframes velixa-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
-  50% {
-    opacity: 0.5;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
+@keyframes velixa-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   ANIMATION UTILITIES
+   ═══════════════════════════════════════════════ */
+
+@utility animate-velixa-pulse {
+  animation: velixa-pulse 1.8s ease-in-out infinite;
+}
+
+@utility animate-velixa-live {
+  animation: velixa-live 1.6s ease-in-out infinite;
+}
+
+@utility animate-signal-pulse {
+  animation: velixa-signal-pulse 0.8s ease-in-out infinite;
+}
+
+@utility animate-velixa-fade {
+  animation: velixa-fade-in 240ms ease-out both;
+}
+
+@utility animate-velixa-scale {
+  animation: velixa-scale-in 180ms ease-out both;
+}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════ */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--velixa-border) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--velixa-border);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--velixa-text-tertiary);
+}
+
+/* ═══════════════════════════════════════════════
+   MEDIA
+   ═══════════════════════════════════════════════ */
+
+video {
+  max-width: 100%;
+}
+
+video:focus-visible {
+  outline: 2px solid var(--velixa-primary);
+  outline-offset: -2px;
+}
+
+/* ═══════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════ */
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   MOBILE
+   ═══════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+  html,
+  body {
+    overflow-x: hidden;
   }
 }

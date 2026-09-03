@@ -1,6 +1,17 @@
+import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { CopyButton } from "./CopyButton";
-import { MonitorUp, MonitorX, Users, QrCode, Phone, Video, PhoneOff } from "lucide-react";
+import {
+  MonitorUp,
+  MonitorX,
+  Users,
+  QrCode,
+  Phone,
+  Video,
+  PhoneOff,
+  Mic,
+  MicOff,
+} from "lucide-react";
 import { Waveform } from "./Waveform";
 import type { HostState } from "@/hooks/usePeerConnection";
 
@@ -18,12 +29,27 @@ export function HostDashboard({
     viewerCount,
     isSharing,
     callMode,
+    localStream,
+    remoteStream,
     canShareScreen,
     startCall,
     endCall,
     startSharing,
     stopSharing,
   } = host;
+  const [isMobile, setIsMobile] = useState(false);
+  const [micEnabled, setMicEnabled] = useState(true);
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
+  const toggleMic = () => {
+    localStream?.getAudioTracks().forEach((track) => {
+      track.enabled = !micEnabled;
+    });
+    setMicEnabled((enabled) => !enabled);
+  };
 
   const statusText =
     state === "initializing"
@@ -40,6 +66,15 @@ export function HostDashboard({
 
   return (
     <div className="grid grid-cols-1 gap-0 lg:grid-cols-[minmax(0,1fr)_360px]">
+      {remoteStream && (
+        <audio
+          className="hidden"
+          autoPlay
+          ref={(element) => {
+            if (element) element.srcObject = remoteStream;
+          }}
+        />
+      )}
       {/* Main */}
       <section className="flex flex-col gap-8 px-6 py-10 lg:px-12 lg:py-14">
         <div>
@@ -144,7 +179,7 @@ export function HostDashboard({
               <PhoneOff className="h-6 w-6" />
             </button>
           )}
-          {!callMode && !isSharing && (
+          {!callMode && !isSharing && !isMobile && (
             <button
               type="button"
               onClick={startSharing}
@@ -174,10 +209,22 @@ export function HostDashboard({
               <MonitorX className="h-6 w-6" />
             </button>
           )}
+          {callMode && (
+            <button
+              type="button"
+              onClick={toggleMic}
+              className="inline-flex min-h-11 items-center justify-center gap-2 border border-panel-line px-4 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-text-muted hover:text-text-primary"
+            >
+              {micEnabled ? <Mic className="h-3.5 w-3.5" /> : <MicOff className="h-3.5 w-3.5" />}
+              {micEnabled ? "Mute microphone" : "Unmute microphone"}
+            </button>
+          )}
           <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-text-muted">
-            {canShareScreen
-              ? "Choose a screen, window, or tab when your browser prompts."
-              : "Screen sharing is not available in this browser. You can still make a voice or video call."}
+            {isMobile
+              ? "Voice and video calls are available here. Screen sharing is available on desktop."
+              : canShareScreen
+                ? "Choose a screen, window, or tab when your browser prompts."
+                : "Screen sharing is not available in this browser. You can still make a voice or video call."}
           </p>
         </div>
       </section>

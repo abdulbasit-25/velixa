@@ -8,7 +8,7 @@ export function CopyButton({ value, label = "Copy" }: { value: string; label?: s
     try {
       await navigator.clipboard.writeText(value);
       setCopied(true);
-      toast.success("Frequency copied");
+      toast.success("Room code copied");
       setTimeout(() => setCopied(false), 1600);
     } catch {
       toast.error("Clipboard unavailable");

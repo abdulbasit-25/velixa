@@ -3,8 +3,27 @@ import Peer, { type MediaConnection, type DataConnection } from "peerjs";
 import { roomToPeerId } from "@/lib/roomCode";
 
 export type PeerRole = "host" | "viewer";
+export type CallMode = "voice" | "video" | "screen";
 export type ConnState =
   "initializing" | "waiting" | "connected" | "live" | "error" | "disconnected";
+
+function mediaError(error: unknown, fallback: string) {
+  if (error instanceof Error) return error.message;
+  if (typeof error === "object" && error !== null && "message" in error) {
+    const message = (error as { message?: unknown }).message;
+    if (typeof message === "string") return message;
+  }
+  return fallback;
+}
+
+function isPermissionError(error: unknown) {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "name" in error &&
+    (error as { name?: unknown }).name === "NotAllowedError"
+  );
+}
 
 export interface HostState {
   role: "host";
@@ -13,7 +32,14 @@ export interface HostState {
   viewerCount: number;
   isSharing: boolean;
   canShareScreen: boolean;
+  callMode: CallMode | null;
+  localStream: MediaStream | null;
+  incomingCall: { caller: string; mode: "voice" | "video"; call: MediaConnection } | null;
+  acceptCall: () => void;
+  rejectCall: () => void;
   error?: string;
+  startCall: (mode: "voice" | "video") => Promise<void>;
+  endCall: () => void;
   startSharing: () => Promise<void>;
   stopSharing: () => void;
   destroy: () => void;
@@ -25,6 +51,13 @@ export interface ViewerState {
   state: ConnState;
   error?: string;
   remoteStream: MediaStream | null;
+  localStream: MediaStream | null;
+  callMode: CallMode | null;
+  incomingCall: { caller: string; mode: CallMode; call: MediaConnection } | null;
+  acceptCall: () => void;
+  rejectCall: () => void;
+  startCall: (mode: "voice" | "video") => Promise<void>;
+  endCall: () => void;
   destroy: () => void;
 }
 
@@ -35,6 +68,9 @@ export function useHost(
   const [state, setState] = useState<ConnState>("initializing");
   const [viewerCount, setViewerCount] = useState(0);
   const [isSharing, setIsSharing] = useState(false);
+  const [callMode, setCallMode] = useState<CallMode | null>(null);
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+  const [incomingCall, setIncomingCall] = useState<HostState["incomingCall"]>(null);
   const [error, setError] = useState<string | undefined>();
   const canShareScreen =
     typeof window !== "undefined" &&
@@ -68,7 +104,7 @@ export function useHost(
         eventRef.current?.("Viewer tuned in", "success");
         // If already sharing, call this new viewer with the current stream
         if (streamRef.current) {
-          const call = peer.call(conn.peer, streamRef.current);
+          const call = peer.call(conn.peer, streamRef.current, { metadata: { mode: "screen" } });
           if (call) {
             mediaCallsRef.current.set(conn.peer, call);
             call.on("close", () => mediaCallsRef.current.delete(conn.peer));
@@ -90,6 +126,15 @@ export function useHost(
       });
     });
 
+    peer.on("call", (call) => {
+      const mode = (call.metadata as { mode?: CallMode } | undefined)?.mode;
+      if (mode === "voice" || mode === "video") {
+        setIncomingCall({ caller: call.peer, mode, call });
+      } else {
+        call.answer();
+      }
+    });
+
     peer.on("error", (err) => {
       console.error("Peer error", err);
       if (err.type === "unavailable-id") {
@@ -107,7 +152,9 @@ export function useHost(
       // Try to reconnect
       try {
         peer.reconnect();
-      } catch {}
+      } catch (error) {
+        console.warn("Peer reconnect failed", error);
+      }
     });
 
     return () => {
@@ -128,6 +175,80 @@ export function useHost(
       peerRef.current = null;
     };
   }, [roomCode]);
+
+  const endCall = useCallback(() => {
+    streamRef.current?.getTracks().forEach((track) => track.stop());
+    streamRef.current = null;
+    micStreamRef.current = null;
+    setLocalStream(null);
+    setCallMode(null);
+    mediaCallsRef.current.forEach((call) => call.close());
+    mediaCallsRef.current.clear();
+    setState(dataConnsRef.current.size > 0 ? "connected" : "waiting");
+    eventRef.current?.("Call ended", "info");
+  }, []);
+
+  const acceptCall = useCallback(async () => {
+    const pending = incomingCall;
+    if (!pending) return;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: pending.mode === "video",
+      });
+      pending.call.answer(stream);
+      mediaCallsRef.current.set(pending.caller, pending.call);
+      streamRef.current = stream;
+      micStreamRef.current = stream;
+      setLocalStream(stream);
+      setCallMode(pending.mode);
+      setIncomingCall(null);
+      setState("live");
+    } catch (err: unknown) {
+      const message = isPermissionError(err)
+        ? `Allow ${pending.mode === "video" ? "camera and microphone" : "microphone"} access to accept the call.`
+        : mediaError(err, "Could not access your microphone.");
+      setError(message);
+      eventRef.current?.(message, "error");
+    }
+  }, [incomingCall]);
+
+  const rejectCall = useCallback(() => {
+    incomingCall?.call.close();
+    setIncomingCall(null);
+    eventRef.current?.("Call declined", "info");
+  }, [incomingCall]);
+
+  const startCall = useCallback(async (mode: "voice" | "video") => {
+    const peer = peerRef.current;
+    if (!peer || dataConnsRef.current.size === 0) {
+      eventRef.current?.("Connect a participant before starting a call.", "error");
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: mode === "video",
+      });
+      streamRef.current = stream;
+      micStreamRef.current = stream;
+      setLocalStream(stream);
+      setCallMode(mode);
+      setState("live");
+      dataConnsRef.current.forEach((_, participantId) => {
+        const call = peer.call(participantId, stream, { metadata: { mode } });
+        if (call) mediaCallsRef.current.set(participantId, call);
+      });
+      eventRef.current?.(`${mode === "video" ? "Video" : "Voice"} call started`, "success");
+    } catch (err: unknown) {
+      const message = isPermissionError(err)
+        ? `Allow ${mode === "video" ? "camera and microphone" : "microphone"} access to start the call.`
+        : mediaError(err, "Could not access your microphone.");
+      setError(message);
+      eventRef.current?.(message, "error");
+    }
+  }, []);
 
   const startSharing = useCallback(async () => {
     const peer = peerRef.current;
@@ -198,17 +319,17 @@ export function useHost(
       });
 
       dataConnsRef.current.forEach((_, viewerId) => {
-        const call = peer.call(viewerId, sharingStream);
+        const call = peer.call(viewerId, sharingStream, { metadata: { mode: "screen" } });
         if (call) {
           mediaCallsRef.current.set(viewerId, call);
           call.on("close", () => mediaCallsRef.current.delete(viewerId));
         }
       });
-    } catch (err: any) {
-      if (err?.name === "NotAllowedError") {
+    } catch (err: unknown) {
+      if (isPermissionError(err)) {
         eventRef.current?.("Screen share was cancelled before it started.", "error");
       } else {
-        eventRef.current?.(err?.message || "Could not access screen.", "error");
+        eventRef.current?.(mediaError(err, "Could not access screen."), "error");
       }
     }
   }, [canShareScreen]);
@@ -247,6 +368,13 @@ export function useHost(
     canShareScreen,
     startSharing,
     stopSharing: stopSharingInternal,
+    callMode,
+    localStream,
+    incomingCall,
+    acceptCall,
+    rejectCall,
+    startCall,
+    endCall,
     destroy,
   };
 }
@@ -258,6 +386,9 @@ export function useViewer(
   const [state, setState] = useState<ConnState>("initializing");
   const [error, setError] = useState<string | undefined>();
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+  const [callMode, setCallMode] = useState<CallMode | null>(null);
+  const [incomingCall, setIncomingCall] = useState<ViewerState["incomingCall"]>(null);
   const peerRef = useRef<Peer | null>(null);
   const dataConnRef = useRef<DataConnection | null>(null);
   const mediaCallRef = useRef<MediaConnection | null>(null);
@@ -301,9 +432,16 @@ export function useViewer(
 
     peer.on("call", (call) => {
       mediaCallRef.current = call;
+      const mode = (call.metadata as { mode?: CallMode } | undefined)?.mode ?? "screen";
+      if (mode !== "screen") {
+        setIncomingCall({ caller: call.peer, mode, call });
+        setState("connected");
+        return;
+      }
       call.answer();
       call.on("stream", (stream) => {
         setRemoteStream(stream);
+        setCallMode(mode);
         setState("live");
         eventRef.current?.("Broadcast incoming", "success");
       });
@@ -334,6 +472,90 @@ export function useViewer(
     };
   }, [roomCode]);
 
+  const acceptCall = useCallback(async () => {
+    const pending = incomingCall;
+    if (!pending) return;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: pending.mode === "video",
+      });
+      pending.call.answer(stream);
+      setLocalStream(stream);
+      setCallMode(pending.mode);
+      setIncomingCall(null);
+      pending.call.on("stream", (stream) => {
+        setRemoteStream(stream);
+        setState("live");
+        eventRef.current?.("Call connected", "success");
+      });
+      pending.call.on("close", () => {
+        stream.getTracks().forEach((track) => track.stop());
+        setLocalStream(null);
+        setRemoteStream(null);
+        setCallMode(null);
+        setState("connected");
+        eventRef.current?.("Call ended", "info");
+      });
+    } catch (err: unknown) {
+      const message = isPermissionError(err)
+        ? `Allow ${pending.mode === "video" ? "camera and microphone" : "microphone"} access to accept the call.`
+        : mediaError(err, "Could not access your microphone.");
+      setError(message);
+      eventRef.current?.(message, "error");
+    }
+  }, [incomingCall]);
+
+  const rejectCall = useCallback(() => {
+    incomingCall?.call.close();
+    setIncomingCall(null);
+    setState("connected");
+    eventRef.current?.("Call declined", "info");
+  }, [incomingCall]);
+
+  const endCall = useCallback(() => {
+    localStream?.getTracks().forEach((track) => track.stop());
+    mediaCallRef.current?.close();
+    setLocalStream(null);
+    setRemoteStream(null);
+    setCallMode(null);
+    setState(dataConnRef.current?.open ? "connected" : "disconnected");
+    eventRef.current?.("Call ended", "info");
+  }, [localStream]);
+
+  const startCall = useCallback(
+    async (mode: "voice" | "video") => {
+      const peer = peerRef.current;
+      const connection = dataConnRef.current;
+      if (!peer || !connection?.open) {
+        eventRef.current?.("Connect to a room before starting a call.", "error");
+        return;
+      }
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: mode === "video",
+        });
+        const call = peer.call(roomToPeerId(roomCode), stream, { metadata: { mode } });
+        if (!call) return;
+        mediaCallRef.current = call;
+        setLocalStream(stream);
+        setCallMode(mode);
+        setState("live");
+        call.on("stream", (stream) => setRemoteStream(stream));
+        call.on("close", endCall);
+        eventRef.current?.(`${mode === "video" ? "Video" : "Voice"} call started`, "success");
+      } catch (err: unknown) {
+        const message = isPermissionError(err)
+          ? `Allow ${mode === "video" ? "camera and microphone" : "microphone"} access to start the call.`
+          : mediaError(err, "Could not access your microphone.");
+        setError(message);
+        eventRef.current?.(message, "error");
+      }
+    },
+    [endCall, roomCode],
+  );
+
   const destroy = useCallback(() => {
     mediaCallRef.current?.close();
     dataConnRef.current?.close();
@@ -346,6 +568,13 @@ export function useViewer(
     state,
     error,
     remoteStream,
+    localStream,
+    callMode,
+    incomingCall,
+    acceptCall,
+    rejectCall,
+    startCall,
+    endCall,
     destroy,
   };
 }
